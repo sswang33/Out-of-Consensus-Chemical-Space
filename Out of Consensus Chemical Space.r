@@ -10,11 +10,14 @@ rules <- list(
 dat_path <- args[1]
 dat <- read.table(dat_path,comment.char= "",sep="\t")
 dat$`SkinSensPred Score` <- as.numeric(dat$`SkinSensPred Score`)
-mols <- try(rcdk::parse.smiles(dat$CanonicalSMILES))
-if(class(mols)=="try-error"){
-  print("smiles can not transfer")
+if(any(is.na(dat$`SkinSensPred Score`))){
+  print("unknown SkinSensPred Score")
 }else{
-  fp <- sapply(mols,function(m){
+  mols <- try(rcdk::parse.smiles(dat$CanonicalSMILES))
+  if(class(mols)=="try-error"){
+    print("smiles can not transfer")
+  }else{
+    fp <- sapply(mols,function(m){
     get.fingerprint(m,type="graph")@bits
   })
   dat$`Out of Consensus Chemical Space` <- sapply(1:nrow(dat),function(i){
@@ -28,3 +31,5 @@ if(class(mols)=="try-error"){
   })
 }
 write.table(dat,file="output.tsv",sep="\t",row.names = F)
+
+}
