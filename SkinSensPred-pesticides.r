@@ -8,7 +8,8 @@ rules <- list(
   list("include"=c(471),"exclude"=c(34,791,212,140))
 )
 dat_path <- args[1]
-dat <- read.table(dat_path,comment.char= "",sep="\t")
+dat <- read.table(dat_path,comment.char= "",sep="\t",stringsAsFactors = F,header = T)
+colnames(dat) <- c("CanonicalSMILES","SkinSensPred Score")
 dat$`SkinSensPred Score` <- as.numeric(dat$`SkinSensPred Score`)
 if(any(is.na(dat$`SkinSensPred Score`))){
   print("unknown SkinSensPred Score")
