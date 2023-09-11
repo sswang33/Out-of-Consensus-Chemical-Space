@@ -18,7 +18,7 @@ if(any(is.na(dat$`SkinSensPred Score`))){
   if(class(mols)=="try-error"){
     print("smiles can not transfer")
   }else{
-    fp <- sapply(mols,function(m){
+    fp <- lapply(mols,function(m){
     get.fingerprint(m,type="graph")@bits
   })
   dat$`Out of Consensus Chemical Space` <- sapply(1:nrow(dat),function(i){
